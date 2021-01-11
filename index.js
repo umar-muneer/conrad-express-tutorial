@@ -67,6 +67,18 @@ app.delete("/courses/:course_id", checkCourseExists, (req, res) => {
 app.get("/error", (req, res) => {
   throw new Error("oh no !!!");
 });
+app.get('/students', (req, res) => {
+  res.json([]);
+});
+app.post('/students', (req, res) => {
+  res.json({});
+});
+app.put('/students/:student_id', (req, res) => {
+  res.status(204).end();
+});
+app.delete('/students/:student_id', (req, res) => {
+  res.status(204).end();
+});
 app.use((err, req, res, next) => {
   if (err) {
     res.status(500).json("oh no, sth went wrong !!");
