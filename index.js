@@ -17,9 +17,26 @@ const checkCourseExists = (req, res, next) => {
   req.courseIndex = courseIndex;
   next();
 };
+const validateCoursePostRequest = (req, res, next) => {
+  const {id, name} = req.body;
+  console.log(parseInt(id));
+  if (isNaN(parseInt(id))) {
+    res.status(400).json({
+      message: 'the id of the course should be a number'
+    });
+    return;
+  }
+  if (!name) {
+    res.status(400).json({
+      message: 'the name of the course is required'
+    });
+    return;
+  }
+  next();
+};
 app.get("/health", (req, res) => res.json("OK"));
 
-app.post("/courses", (req, res) => {
+app.post("/courses", validateCoursePostRequest, (req, res) => {
   const { id, name } = req.body;
   collection.push({ id, name });
   res.json({
