@@ -5,6 +5,18 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
+const checkCourseExists = (req, res, next) => {
+  const courseId = parseInt(req.params.course_id);
+  const courseIndex = collection.findIndex(course => course.id === courseId);
+  if (courseIndex === -1) {
+    res.status(404).json({
+      message: 'requested resource was not found'
+    });
+    return;
+  }
+  req.courseIndex = courseIndex;
+  next();
+};
 app.get("/health", (req, res) => res.json("OK"));
 
 app.post("/courses", (req, res) => {
@@ -18,33 +30,19 @@ app.post("/courses", (req, res) => {
 app.get("/courses", (req, res) => {
   res.json(collection);
 });
-app.put("/courses/:course_id", (req, res) => {
+app.put("/courses/:course_id", checkCourseExists, (req, res) => {
   const {name} = req.body;
   const courseId = parseInt(req.params.course_id);
   const updatedCourse = {
     id: courseId,
     name
   };
-  const courseIndex = collection.findIndex(course => course.id === courseId);
-  if (courseIndex === -1) {
-    res.status(404).json({
-      message: 'requested resource was not found'
-    });
-    return;
-  }
-  collection[courseIndex] = updatedCourse;
+  collection[req.courseIndex] = updatedCourse;
   res.status(200).json(collection[courseIndex]);
 });
-app.delete('/courses/:course_id', (req, res) => {
+app.delete('/courses/:course_id', checkCourseExists, (req, res) => {
   const courseId = parseInt(req.params.course_id);
-  const courseIndex = collection.findIndex(course => course.id === courseId);
-  if (courseIndex === -1) {
-    res.status(404).json({
-      message: 'requested resource was not found'
-    });
-    return;
-  }
-  collection.splice(courseIndex, 1);
+  collection.splice(req.courseIndex, 1);
   res.status(204).end();
 });
 app.listen(port, () => console.log(`listening on port ${port}`));
