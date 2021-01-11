@@ -8,11 +8,11 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(bunyanLogger());
 app.get("/health", (req, res) => res.json("OK"));
-app.use('/courses', courses);
-app.use('/students', students);
 app.get("/error", (req, res) => {
   throw new Error("oh no !!!");
 });
+app.use('/courses', courses);
+app.use('/students', students);
 app.use((err, req, res, next) => {
   if (err) {
     res.status(500).json("oh no, sth went wrong !!");
