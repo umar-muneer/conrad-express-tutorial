@@ -26,6 +26,12 @@ app.put("/courses/:course_id", (req, res) => {
     name
   };
   const courseIndex = collection.findIndex(course => course.id === req.params.course_id);
+  if (courseIndex === -1) {
+    res.status(404).json({
+      message: 'requested resource was not found'
+    });
+    return;
+  }
   collection[courseIndex] = updatedCourse;
   res.status(200).json(updatedCourse);
 });
