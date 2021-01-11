@@ -10,6 +10,12 @@ app.get("/health", (req, res) => res.json("OK"));
 app.post("/courses", (req, res) => {
   const { id, name } = req.body;
   collection.push({ id, name });
-  res.json(collection); // sending a json request with the collection array as the body and status 200
+  res.json({
+    id,
+    name
+  }); // sending a json request with the collection array as the body and status 200
+});
+app.get("/courses", (req, res) => {
+  res.json(collection);
 });
 app.listen(port, () => console.log(`listening on port ${port}`));
