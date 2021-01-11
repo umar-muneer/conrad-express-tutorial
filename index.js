@@ -20,12 +20,12 @@ app.get("/courses", (req, res) => {
 });
 app.put("/courses/:course_id", (req, res) => {
   const {name} = req.body;
-  const courseId = req.params.course_id;
+  const courseId = parseInt(req.params.course_id);
   const updatedCourse = {
     id: courseId,
     name
   };
-  const courseIndex = collection.findIndex(course => course.id === req.params.course_id);
+  const courseIndex = collection.findIndex(course => course.id === courseId);
   if (courseIndex === -1) {
     res.status(404).json({
       message: 'requested resource was not found'
@@ -33,6 +33,18 @@ app.put("/courses/:course_id", (req, res) => {
     return;
   }
   collection[courseIndex] = updatedCourse;
-  res.status(200).json(updatedCourse);
+  res.status(200).json(collection[courseIndex]);
+});
+app.delete('/courses/:course_id', (req, res) => {
+  const courseId = parseInt(req.params.course_id);
+  const courseIndex = collection.findIndex(course => course.id === courseId);
+  if (courseIndex === -1) {
+    res.status(404).json({
+      message: 'requested resource was not found'
+    });
+    return;
+  }
+  collection.splice(courseIndex, 1);
+  res.status(204).end();
 });
 app.listen(port, () => console.log(`listening on port ${port}`));
