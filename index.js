@@ -35,13 +35,6 @@ const validateCoursePostRequest = (req, res, next) => {
 };
 app.use(bodyParser.json());
 app.use(bunyanLogger());
-app.use((err, req, res, next) => {
-  if (err) {
-    res.status(500).json("oh no, sth went wrong !!");
-    req.log.error(err);
-    return;
-  }
-});
 app.get("/health", (req, res) => res.json("OK"));
 app.post("/courses", validateCoursePostRequest, (req, res) => {
   const { id, name } = req.body;
@@ -71,5 +64,12 @@ app.delete("/courses/:course_id", checkCourseExists, (req, res) => {
 });
 app.get("/error", (req, res) => {
   throw new Error("oh no !!!");
+});
+app.use((err, req, res, next) => {
+  if (err) {
+    res.status(500).json("oh no, sth went wrong !!");
+    req.log.error(err);
+    return;
+  }
 });
 app.listen(port, () => console.log(`listening on port ${port}`));
