@@ -55,7 +55,7 @@ app.put("/courses/:course_id", checkCourseExists, (req, res) => {
     name,
   };
   collection[req.courseIndex] = updatedCourse;
-  res.status(200).json(collection[courseIndex]);
+  res.status(200).json(collection[req.courseIndex]);
 });
 app.delete("/courses/:course_id", checkCourseExists, (req, res) => {
   const courseId = parseInt(req.params.course_id);
