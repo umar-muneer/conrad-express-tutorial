@@ -45,6 +45,8 @@ app.post("/courses", validateCoursePostRequest, (req, res) => {
   }); // sending a json request with the collection array as the body and status 200
 });
 app.get("/courses", (req, res) => {
+  const randomHeader = req.get('x-random-header');
+  res.set('x-random-header', randomHeader);
   res.json(collection);
 });
 app.put("/courses/:course_id", checkCourseExists, (req, res) => {
