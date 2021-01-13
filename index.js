@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const bunyanLogger = require("express-bunyan-logger");
 const {initDb} = require('./models/index');
-const {courses, students} = require('./routers');
+const {courses, students, teachers} = require('./routers');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -14,6 +14,7 @@ app.get("/error", (req, res) => {
 });
 app.use('/courses', courses);
 app.use('/students', students);
+app.use('/teachers', teachers);
 app.use((err, req, res, next) => {
   if (err) {
     res.status(500).json("oh no, sth went wrong !!");
