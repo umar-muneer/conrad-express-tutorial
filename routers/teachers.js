@@ -24,6 +24,12 @@ Router.put("/:teacher_id", async (req, res) => {
   });
   res.status(204).end();
 });
+Router.get("/:teacher_id/courses", async (req, res) => {
+  const teacherId = parseInt(req.params.teacher_id);
+  const teacher = await Teacher.findById(teacherId);
+  const teacherCourses = await teacher.getCourses();
+  res.json(teacherCourses);
+});
 Router.delete("/:teacher_id", async (req, res) => {
   const teacherId = parseInt(req.params.teacher_id, 10);
   await Teacher.destroy({
