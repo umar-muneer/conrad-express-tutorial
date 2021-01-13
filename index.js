@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const bunyanLogger = require("express-bunyan-logger");
+const {initDb} = require('./models/index');
 const {courses, students} = require('./routers');
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,4 +21,6 @@ app.use((err, req, res, next) => {
     return;
   }
 });
-app.listen(port, () => console.log(`listening on port ${port}`));
+(async () => {
+  await initDb();
+})();
