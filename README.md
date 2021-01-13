@@ -15,7 +15,7 @@ https://sequelize.org/v4/
 3. Define associations
 4. find, findAll, create, update, delete
 5. Audit trails
-6. Advanced (hooks, scopes, paranoid)
+6. Advanced (hooks, scopes, paranoid, transactions)
 
 #### Data Modeling
 We have three entities
