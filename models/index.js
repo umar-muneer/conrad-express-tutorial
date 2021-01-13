@@ -8,11 +8,6 @@ const sequelize = new Sequelize("sequelize_demo", username, password, {
     min: 1,
   },
 });
-const initDb = async () => {
-  await sequelize.query("select version()");
-  await sequelize.sync({ alter: true }); // Don't ever do this in production, or local for that matter :P
-  console.log("i am in!!!");
-};
 const Teacher = sequelize.define(
   "teachers",
   {
@@ -33,45 +28,63 @@ const Teacher = sequelize.define(
     timestamps: true,
   }
 );
-const Student = sequelize.define('students', {
+const Student = sequelize.define(
+  "students",
+  {
     id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
     },
     name: {
-        type: Sequelize.STRING,
-        allowNull: false
+      type: Sequelize.STRING,
+      allowNull: false,
     },
     createdAt: Sequelize.DATE,
-    updatedAt: Sequelize.DATE
-}, {
-    timestamps: true
-});
-const Course = sequelize.define('courses', {
+    updatedAt: Sequelize.DATE,
+  },
+  {
+    timestamps: true,
+  }
+);
+const Course = sequelize.define(
+  "courses",
+  {
     id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false
-    }, 
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+    },
     name: {
-        type: Sequelize.STRING,
-        allowNull: false
+      type: Sequelize.STRING,
+      allowNull: false,
     },
     teacher_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false
+      type: Sequelize.INTEGER,
+      allowNull: false,
     },
     createdAt: Sequelize.DATE,
-    updatedAt: Sequelize.DATE
-}, {
-    timestamps: true
-});
+    updatedAt: Sequelize.DATE,
+  },
+  {
+    timestamps: true,
+  }
+);
+const defineAssociations = () => {
+    Course.belongsTo(Teacher, {foreignKey: 'teacher_id', as: 'teacher'});
+    Teacher.hasMany(Course, {foreignKey: 'teacher_id', as: 'courses'});
+};
+const initDb = async () => {
+    await sequelize.query("select version()");
+    console.log("i am in!!!");
+    await sequelize.sync({ alter: true }); // Don't ever do this in production, or local for that matter :P
+    defineAssociations();
+};
 module.exports = {
   initDb,
   Teacher,
   Student,
-  Course
+  Course,
 };
