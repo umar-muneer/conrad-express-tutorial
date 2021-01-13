@@ -99,13 +99,11 @@ const defineAssociations = () => {
   Teacher.hasMany(Course, { foreignKey: "teacher_id", as: "courses" });
   Course.belongsToMany(Student, {
     through: CourseStudent,
-    foreignKey: "course_id",
-    as: "students",
+    foreignKey: "course_id"
   });
   Student.belongsToMany(Course, {
     through: CourseStudent,
-    foreignKey: "student_id",
-    as: "students",
+    foreignKey: "student_id"
   });
   CourseStudent.belongsTo(Course, {foreignKey: "course_id"});
   CourseStudent.belongsTo(Student, {foreignKey: "student_id"});

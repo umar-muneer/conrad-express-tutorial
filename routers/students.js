@@ -17,11 +17,11 @@ Router.put("/:student_id", async (req, res) => {
   const studentId = parseInt(req.params.student_id, 10);
   const student = await Student.find({
     where: {
-      id: studentId
-    }
+      id: studentId,
+    },
   });
   await student.update({
-    name
+    name,
   });
   res.status(204).end();
 });
@@ -49,6 +49,12 @@ Router.post("/:student_id/courses/", async (req, res) => {
     ],
   });
   res.json(courseStudent);
+});
+Router.get("/:student_id/courses", async (req, res) => {
+  const studentId = parseInt(req.params.student_id);
+  const student = await Student.findById(studentId);
+  const studentCourses = await student.getCourses();
+  res.json(studentCourses);
 });
 Router.delete("/:student_id", async (req, res) => {
   const studentId = parseInt(req.params.student_id, 10);
