@@ -107,6 +107,8 @@ const defineAssociations = () => {
     foreignKey: "student_id",
     as: "students",
   });
+  CourseStudent.belongsTo(Course, {foreignKey: "course_id"});
+  CourseStudent.belongsTo(Student, {foreignKey: "student_id"});
 };
 const initDb = async () => {
   await sequelize.query("select version()");
