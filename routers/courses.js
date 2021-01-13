@@ -1,7 +1,6 @@
 const express = require("express");
-const { Course } = require("../models/index");
+const { Course, Teacher } = require("../models/index");
 const Router = express.Router();
-const collection = [];
 const validateCoursePostRequest = (req, res, next) => {
   const { id, name, teacherId } = req.body;
   if (isNaN(parseInt(id))) {
@@ -49,7 +48,12 @@ Router.post("/", validateCoursePostRequest, async (req, res) => {
 Router.get("/", async (req, res) => {
   const randomHeader = req.get("x-random-header");
   res.set("x-random-header", randomHeader);
-  const courses = await Course.findAll();
+  const courses = await Course.findAll({
+    include: {
+      model: Teacher,
+      as: "teacher",
+    },
+  });
   res.json(courses);
 });
 Router.put("/:course_id", checkCourseExists, async (req, res) => {
