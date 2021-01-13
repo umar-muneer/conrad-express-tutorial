@@ -97,6 +97,16 @@ const CourseStudent = sequelize.define("course_students", {
 const defineAssociations = () => {
   Course.belongsTo(Teacher, { foreignKey: "teacher_id", as: "teacher" });
   Teacher.hasMany(Course, { foreignKey: "teacher_id", as: "courses" });
+  Course.belongsToMany(Student, {
+    through: CourseStudent,
+    foreignKey: "course_id",
+    as: "students",
+  });
+  Student.belongsToMany(Course, {
+    through: CourseStudent,
+    foreignKey: "student_id",
+    as: "students",
+  });
 };
 const initDb = async () => {
   await sequelize.query("select version()");
