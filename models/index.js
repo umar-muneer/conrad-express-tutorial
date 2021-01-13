@@ -33,7 +33,24 @@ const Teacher = sequelize.define(
     timestamps: true,
   }
 );
+const Student = sequelize.define('students', {
+    id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    createdAt: Sequelize.DATE,
+    updatedAt: Sequelize.DATE
+}, {
+    timestamps: true
+});
 module.exports = {
   initDb,
   Teacher,
+  Student
 };
