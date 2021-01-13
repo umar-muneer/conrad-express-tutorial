@@ -65,6 +65,12 @@ Router.put("/:course_id", checkCourseExists, async (req, res) => {
   );
   res.status(204).end();
 });
+Router.get("/:course_id/students", async (req, res) => {
+  const courseId = parseInt(req.params.course_id, 10);
+  const course = await Course.findById(courseId);
+  const courseStudents = await course.getStudents();
+  res.json(courseStudents);
+});
 Router.delete("/:course_id", checkCourseExists, async (req, res) => {
   const courseId = parseInt(req.params.course_id);
   await Course.destroy({
