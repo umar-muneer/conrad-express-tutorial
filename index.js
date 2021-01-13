@@ -23,4 +23,5 @@ app.use((err, req, res, next) => {
 });
 (async () => {
   await initDb();
+  app.listen(port, () => console.log(`listening on port ${port}`));
 })();
