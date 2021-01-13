@@ -2,13 +2,7 @@ const express = require("express");
 const { Course, Teacher } = require("../models/index");
 const Router = express.Router();
 const validateCoursePostRequest = (req, res, next) => {
-  const { id, name, teacherId } = req.body;
-  if (isNaN(parseInt(id))) {
-    res.status(400).json({
-      message: "the id of the course should be a number",
-    });
-    return;
-  }
+  const { name, teacherId } = req.body;
   if (!name) {
     res.status(400).json({
       message: "the name of the course is required",
