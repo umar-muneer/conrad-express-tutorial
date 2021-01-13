@@ -10,13 +10,12 @@ http://expressjs.com/en/resources/middleware/body-parser.html
 ## Sequelize
 https://sequelize.org/v4/
 ### Plan
-1. Data modeling
-2. Define models in sequelize
-3. Define associations
-4. Fields
-5. find, findAll, create, update, delete
-6. Audit trails
-7. Advanced (hooks, scopes, paranoid, transactions)
+* Data modeling
+* Define models in sequelize
+* Define associations
+* find, findAll, create, update, delete
+* Instances
+* Advanced (hooks, scopes, paranoid, transactions)
 
 #### Data Modeling
 We have three entities
