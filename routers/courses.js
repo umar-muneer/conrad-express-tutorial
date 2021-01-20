@@ -1,60 +1,83 @@
 const express = require("express");
+const { Course, Teacher } = require("../models/index");
 const Router = express.Router();
-const collection = [];
 const validateCoursePostRequest = (req, res, next) => {
-  const { id, name } = req.body;
-  if (isNaN(parseInt(id))) {
-    res.status(400).json({
-      message: "the id of the course should be a number",
-    });
-    return;
-  }
+  const { name, teacherId } = req.body;
   if (!name) {
     res.status(400).json({
       message: "the name of the course is required",
     });
     return;
   }
+  if (!teacherId) {
+    res.status(400).json({
+      messsage: "the teacher id should be specified",
+    });
+  }
   next();
 };
-const checkCourseExists = (req, res, next) => {
+const checkCourseExists = async (req, res, next) => {
   const courseId = parseInt(req.params.course_id);
-  const courseIndex = collection.findIndex((course) => course.id === courseId);
-  if (courseIndex === -1) {
+  const course = await Course.find({
+    where: {
+      id: courseId,
+    },
+  });
+  if (!course) {
     res.status(404).json({
       message: "requested resource was not found",
     });
     return;
   }
-  req.courseIndex = courseIndex;
   next();
 };
-Router.post("/", validateCoursePostRequest, (req, res) => {
-  const { id, name } = req.body;
-  collection.push({ id, name });
-  res.json({
-    id,
+Router.post("/", validateCoursePostRequest, async (req, res) => {
+  const { name, teacherId } = req.body;
+  const course = await Course.create({
     name,
-  }); // sending a json request with the collection array as the body and status 200
+    teacher_id: teacherId,
+  });
+  res.json(course);
 });
-Router.get("/", (req, res) => {
+Router.get("/", async (req, res) => {
   const randomHeader = req.get("x-random-header");
   res.set("x-random-header", randomHeader);
-  res.json(collection);
+  const courses = await Course.findAll({
+    include: {
+      model: Teacher,
+      as: "teacher",
+    },
+  });
+  res.json(courses);
 });
-Router.put("/:course_id", checkCourseExists, (req, res) => {
+Router.put("/:course_id", checkCourseExists, async (req, res) => {
   const { name } = req.body;
   const courseId = parseInt(req.params.course_id);
-  const updatedCourse = {
-    id: courseId,
-    name,
-  };
-  collection[req.courseIndex] = updatedCourse;
-  res.status(200).json(collection[req.courseIndex]);
+  await Course.update(
+    {
+      name,
+    },
+    {
+      where: {
+        id: courseId,
+      },
+    }
+  );
+  res.status(204).end();
 });
-Router.delete("/:course_id", checkCourseExists, (req, res) => {
+Router.get("/:course_id/students", async (req, res) => {
+  const courseId = parseInt(req.params.course_id, 10);
+  const course = await Course.findById(courseId);
+  const courseStudents = await course.getStudents();
+  res.json(courseStudents);
+});
+Router.delete("/:course_id", checkCourseExists, async (req, res) => {
   const courseId = parseInt(req.params.course_id);
-  collection.splice(req.courseIndex, 1);
+  await Course.destroy({
+    where: {
+      id: courseId,
+    },
+  });
   res.status(204).end();
 });
 module.exports = Router;
