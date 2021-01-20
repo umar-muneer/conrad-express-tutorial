@@ -55,3 +55,10 @@ course_id | int
 grade | string
 createdAt | Date
 updatedAt | Date
+
+# How to run the Database
+**docker rm -f mysql && docker run --name=mysql -v /Users/umarmuneer/Documents/mysql-data:/var/lib/mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=your-root-password mysql**
+
+# How to run the server
+**USER=your-db-user PASS=your-db-user-password npx nodemon index.js**
+
