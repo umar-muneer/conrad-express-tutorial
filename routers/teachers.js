@@ -5,6 +5,11 @@ Router.get("/", async (req, res) => {
   const teachers = await Teacher.findAll();
   res.json(teachers); 
 });
+Router.get("/:teacher_id", async (req, res) => {
+  const teacherId = parseInt(req.params.teacher_id);
+  const teacher = await Teacher.findById(teacherId);
+  res.json(teacher); 
+});
 Router.post("/", async (req, res) => {
   const {name} = req.body;
   const teacher = await Teacher.create({
