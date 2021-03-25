@@ -1,0 +1,15 @@
+<h4>Component 1</h4>
+<div class="row">
+  <div class="col-6">
+    <input
+      class="form-control"
+      placeholder="Please enter message"
+      [(ngModel)]="msgToPublish"
+    />
+  </div>
+  <button type="button" class="btn btn-primary" (click)="publishMessage()">
+    Publish
+  </button>
+</div>
+
+<div class="p-3" style="font-size: 16px;">Published Message: <b>{{ msg }}</b></div>

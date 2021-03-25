@@ -1,0 +1,28 @@
+<div class="container-fluid p-4">
+  <div class="row p-4">
+    <h2>
+      <a [routerLink]="['/teacher']">Teachers</a>
+    </h2>
+    <svg style="width: 42px; height: 42px" viewBox="0 0 24 24">
+      <path
+        fill="currentColor"
+        d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+      />
+    </svg>
+    <h2>
+      {{ teacher.name }}
+    </h2>
+    <h2 style="margin-left: 24px">
+      <span class="badge bg-primary" style="color: white">
+        Courses: {{ courseCount }}
+      </span>
+    </h2>
+  </div>
+  <div>
+    <app-course-detail
+      *ngIf="teacher.id"
+      (courseCountEvent)="updateCourseCount($event)"
+      [teacherId]="teacher.id"
+    ></app-course-detail>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="container-fluid p-4">
+  <h2>Teachers</h2>
+  <div class="row mt-3">
+    <div class="col-3">
+      <input
+        class="form-control"
+        placeholder="Please enter name"
+        [(ngModel)]="name"
+      />
+    </div>
+    <button type="button" class="btn btn-primary" (click)="addTeacher()">
+      Add Teacher
+    </button>
+  </div>
+  <div class="mt-4">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let teacher of teachers; let index = index">
+          <td style="vertical-align: middle">{{ index + 1 }}</td>
+          <td style="vertical-align: middle">
+            <button type="button" class="btn btn-link" [routerLink]="['/teacher', teacher.id]">
+              {{ teacher.name }}
+            </button>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              (click)="removeTeacher(teacher)"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
